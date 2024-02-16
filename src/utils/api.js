@@ -18,14 +18,16 @@ export const loginRequest = (user) => {
 };
 
 export const logoutRequest = () => {
-    return new Promise((reject) => {
+    return new Promise((resolve, reject) => {
         fetch(`${API}/logout`, {
-            method: "POST",
+            method: "GET",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
             },
         })
-            .then((response) => response.json())
+            .then((response) => { return response.json() })
+            .then((result) => resolve(result.data))
             .catch((error) => {
                 reject(error);
             });

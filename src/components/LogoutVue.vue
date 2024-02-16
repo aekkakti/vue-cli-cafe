@@ -3,9 +3,7 @@ import store from "@/store";
 export default {
   methods: {
     logout() {
-      this.$store
-          .dispatch('LOGOUT_REQUEST')
-          .then(() => this.$router.push("/"));
+      this.$store.dispatch('LOGOUT_REQUEST').then(() => this.$router.push("/"));
     },
   },
 };
