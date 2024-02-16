@@ -3,6 +3,7 @@ import store from "@/store";
 import HomeVue from "../components/HomeVue.vue";
 import LoginVue from "../components/LoginVue.vue";
 import UserVue from "../components/UserVue.vue"
+import LogoutVue from "../components/LogoutVue.vue";
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -32,13 +33,19 @@ const routes = [
     component: LoginVue,
     beforeEnter: ifNotAuthenticated,
   },
-    // Регистрация
+    // Регистрирование новых пользователей в системе
   {
     path: "/user",
     name: "user",
     component: UserVue,
-    beforeEnter: ifNotAuthenticated
-  }
+    beforeEnter: ifAuthenticated
+  },
+  {
+    path: "/logout",
+    name: "logout",
+    component: LogoutVue,
+    beforeEnter: ifAuthenticated
+  },
 ];
 
 const router = createRouter({

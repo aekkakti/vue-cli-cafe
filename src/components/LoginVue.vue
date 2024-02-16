@@ -1,35 +1,36 @@
 <script>
 import store from "@/store";
-import AUTH_REQUEST from "@/store/index.js";
 export default {
   data() {
     return {
       login: "",
       password: "",
-    }
+    };
   },
   methods: {
-    login() {
+    loginAccount() {
       const userData = {
         login: this.login,
         password: this.password,
-      }
+      };
       this.$store.dispatch('AUTH_REQUEST', userData)
           .then(()=> this.$router.push("/"));
     },
   },
 };
 </script>
+
 <template>
-  <form class="loginForm" @submit.prevent="login">
+  <form class="loginForm" @submit.prevent="loginAccount">
     <h2>Авторизация</h2>
-    <label for="login">Логин</label>
-    <input type="text" name="login" required v-model="login" /><br>
-    <label for="password">Пароль</label>
-    <input type="password" name="password" required v-model="password" /> <br>
+    <label>Логин</label>
+    <input type="text" required v-model="login" /><br>
+    <label>Пароль</label>
+    <input type="password" required v-model="password" /> <br>
     <button type="submit">Войти</button>
   </form>
 </template>
+
 <style scoped>
 
 .loginForm {

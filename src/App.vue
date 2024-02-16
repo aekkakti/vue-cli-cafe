@@ -1,11 +1,11 @@
 <template>
   <nav>
-    <router-link to="/">Главная</router-link> |
-    <router-link to="/login">Авторизация </router-link> |
-    <router-link to="/user">Регистрация </router-link> |
-    <router-link to="/work-shift">Добавление смены </router-link> |
-    <router-link to="/order">Добавление заказа </router-link> |
-    <router-link to="/logout">Выход </router-link> |
+    <router-link to="/">Главная | </router-link>
+    <router-link to="/login" v-if="!this.$store.getters.isAuthenticated">Авторизация | </router-link>
+    <router-link to="/user" v-if="this.$store.getters.isAuthenticated">Регистрация | </router-link>
+    <router-link to="/work-shift" v-if="this.$store.getters.isAuthenticated">Добавление смены | </router-link>
+    <router-link to="/order" v-if="this.$store.getters.isAuthenticated">Добавление заказа | </router-link>
+    <router-link to="/logout" v-if="this.$store.getters.isAuthenticated">Выход | </router-link>
   </nav>
   <router-view />
 </template>
