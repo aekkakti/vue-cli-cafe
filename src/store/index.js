@@ -45,8 +45,8 @@ export default createStore({
                     });
             })
         },
-        LOGOUT_REQUEST ({commit}, user) {
-            return new Promise ((resolve, reject) => {
+        LOGOUT_REQUEST: ({commit}, user) => {
+            return new Promise((resolve, reject) => {
                 logoutRequest(user)
                     .then((token) => {
                         commit('LOGOUT_SUCCESS', token);
@@ -59,9 +59,9 @@ export default createStore({
                     })
             })
         },
-        REGISTER_REQUEST({commit}, user) {
+        REGISTER_REQUEST({commit}, userInfoArray) {
             return new Promise ((resolve, reject) => {
-                registerRequest(user)
+                registerRequest(userInfoArray)
                     .then((token) => {
                         commit('REGISTER_SUCCESS', token);
                         localStorage.setItem('myAppToken', token);
