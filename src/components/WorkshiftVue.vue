@@ -27,8 +27,8 @@ export default {
         <p>Начало смены: {{ workshift.start }}</p>
         <p>Окончание смены: {{ workshift.end }}</p>
 
-        <button type="submit" @click="openWorkshiftRequest(workshift.id)">Открыть смену</button><br><br>
-        <button type="submit" @click="closeWorkshiftRequest(workshift.id)">Закрыть смену</button><br><br>
+        <button @click="openWorkshiftRequest(workshift.id)">Открыть смену</button><br><br>
+        <button @click="closeWorkshiftRequest(workshift.id)">Закрыть смену</button><br><br>
 
       </div>
     </div>
@@ -37,13 +37,17 @@ export default {
 </template>
 <style scoped>
 
-.openedWorkshiftsInfo {
+.openedWorkshiftsInfo{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 100px;
 }
 
-
+.closedWorkshiftsInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 100px;
+}
 
 .card {
   display: flex;
