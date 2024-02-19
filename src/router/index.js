@@ -5,6 +5,7 @@ import LoginVue from "../components/LoginVue.vue";
 import UserVue from "../components/UserVue.vue"
 import LogoutVue from "../components/LogoutVue.vue";
 import OrderVue from "../components/OrderVue.vue"
+import WorkshiftVue from "@/components/WorkshiftVue.vue";
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -51,6 +52,12 @@ const routes = [
     path: "/order",
     name: "order",
     component: OrderVue,
+    beforeEnter: ifAuthenticated
+  },
+  {
+    path: "/work-shift",
+    name: "work-shift",
+    component: WorkshiftVue,
     beforeEnter: ifAuthenticated
   }
 ];

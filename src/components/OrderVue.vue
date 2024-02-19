@@ -1,6 +1,6 @@
 <script>
 import store from "@/store"
-import ADD_ORDER_REQUEST from "@/store/index"
+
 import {mapGetters} from "vuex";
 
 export default {

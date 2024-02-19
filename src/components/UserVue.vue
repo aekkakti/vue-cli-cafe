@@ -1,6 +1,6 @@
 <script>
 import store from "@/store"
-import REGISTER_REQUEST from "@/store/index"
+
 import {mapGetters} from "vuex";
 export default {
   data() {

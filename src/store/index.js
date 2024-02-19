@@ -1,15 +1,17 @@
 import {createStore} from "vuex";
-import {loginRequest, logoutRequest, registerRequest, addOrderRequest} from "@/utils/api";
+import {loginRequest, logoutRequest, registerRequest, addOrderRequest, showWorkShifts} from "@/utils/api";
 
 export default createStore({
     state: {
         token: localStorage.getItem('myAppToken') || '',
         userInfoArray: [],
-        orders: []
+        workshifts: [],
+        orders: [],
     },
     getters: {
         isAuthenticated: (state) => !!state.token,
-        registerUser: state => state.orders
+        getWorkshifts: (state) => state.workshifts,
+        registerUser: (state) => state.userInfoArray
     },
     mutations: {
         AUTH_SUCCESS: (state, token) => {
@@ -26,17 +28,20 @@ export default createStore({
         },
         // переделать добавление пользователя
         REGISTER_SUCCESS: (state, userInfoArray) => {
-            state.userInfoArray = userInfoArray
+            state.userInfoArray.push(...userInfoArray)
         },
         REGISTER_ERROR: (state) => {
             state.userInfoArray = ""
+        },
+        WORKSHIFT_SHOW: (state, workshifts) => {
+            state.workshifts = workshifts
         },
         ADD_ORDER_SUCCESS: (state, orders) => {
             state.orders.push(...orders)
         },
         ADD_ORDER_ERROR: (state) => {
             state.orders = ""
-        }
+        },
     },
     actions: {
         AUTH_REQUEST({commit}, user) {
@@ -82,7 +87,16 @@ export default createStore({
                     })
             })
         },
-        ADD_ORDER_REQUEST( {commit}) {
+        WORKSHIFTS_REQUEST ({ commit }) {
+            return new Promise((resolve) => {
+                showWorkShifts()
+                    .then((result) => {
+                        commit('WORKSHIFT_SHOW', result)
+                        resolve()
+                    })
+            })
+        },
+        ADD_ORDER_REQUEST( {commit }) {
             return new Promise((resolve, reject) => {
                 addOrderRequest()
                     .then((orders) => {
