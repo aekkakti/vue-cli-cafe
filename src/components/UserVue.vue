@@ -8,8 +8,8 @@ export default {
       name: "",
       login: "",
       password: "",
-      photo: "",
-      role: ""
+      photo_file: "",
+      role_id: null
     }
   },
   computed: {
@@ -24,8 +24,8 @@ export default {
         name: this.name,
         login: this.login,
         password: this.password,
-        photo: this.photo,
-        role: this.role
+        photo_file: this.photo_file,
+        role_id: this.role_id
       }
 
       this.$store
@@ -48,7 +48,7 @@ export default {
   <label for="photo">Фото</label><br>
   <input type="file" v-on:change="photo_file"/><br>
   <label for="selectRole">Роль</label><br>
-  <select v-model="role"><br>
+  <select v-model="role_id">
       <option value="1">Администратор</option>
       <option value="2">Официант</option>
       <option value="3">Повар</option>

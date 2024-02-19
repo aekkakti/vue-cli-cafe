@@ -4,6 +4,7 @@ import HomeVue from "../components/HomeVue.vue";
 import LoginVue from "../components/LoginVue.vue";
 import UserVue from "../components/UserVue.vue"
 import LogoutVue from "../components/LogoutVue.vue";
+import OrderVue from "../components/OrderVue.vue"
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!store.getters.isAuthenticated) {
@@ -46,6 +47,12 @@ const routes = [
     component: LogoutVue,
     beforeEnter: ifAuthenticated
   },
+  {
+    path: "/order",
+    name: "order",
+    component: OrderVue,
+    beforeEnter: ifAuthenticated
+  }
 ];
 
 const router = createRouter({
