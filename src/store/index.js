@@ -1,5 +1,5 @@
 import {createStore} from "vuex";
-import {loginRequest, logoutRequest, registerRequest, addOrderRequest, showWorkShifts} from "@/utils/api";
+import {loginRequest, logoutRequest, registerRequest, addOrderRequest, showWorkShifts, openWorkshiftRequest, closeWorkshiftRequest} from "@/utils/api";
 
 export default createStore({
     state: {
@@ -35,6 +35,14 @@ export default createStore({
         },
         WORKSHIFT_SHOW: (state, workshifts) => {
             state.workshifts = workshifts
+        },
+        CLOSE_WORKSHIFT: (state, workshifts) => {
+            const index = state.workshifts.map(item => item.id).indexOf(workshifts)
+            state.workshifts[index].active = false
+        },
+        OPEN_WORKSHIFT: (state, workshifts) => {
+            const index = state.workshifts.map(item => item.id).indexOf(workshifts)
+            state.workshifts[index].active = true
         },
         ADD_ORDER_SUCCESS: (state, orders) => {
             state.orders.push(...orders)
@@ -96,6 +104,25 @@ export default createStore({
                     })
             })
         },
+        OPEN_WORKSHIFT_REQUEST({ commit }) {
+            return new Promise ((resolve) => {
+                openWorkshiftRequest()
+                    .then((result) => {
+                        commit('OPEN_WORKSHIFT', result)
+                        resolve()
+                    })
+            })
+        },
+        CLOSE_WORSHIFT_REQUEST ({ commit }) {
+            return new Promise ((resolve) => {
+                closeWorkshiftRequest()
+                    .then((result) => {
+                        commit('CLOSE_WORKSHIFT', result)
+                        resolve()
+                    })
+            })
+        },
+
         ADD_ORDER_REQUEST( {commit }) {
             return new Promise((resolve, reject) => {
                 addOrderRequest()

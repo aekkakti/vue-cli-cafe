@@ -85,3 +85,39 @@ export const showWorkShifts = () => {
             })
     })
 }
+
+export const openWorkshiftRequest = (index) => {
+    return new Promise((resolve) => {
+        fetch(`${API}/work-shift/${index}/open`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
+            },
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((result) => {
+                resolve(result)
+            })
+    })
+}
+
+export const closeWorkshiftRequest = (index) => {
+    return new Promise( (resolve) => {
+        fetch(`${API}/work-shift/${index}/close`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
+            },
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((result) => {
+                resolve(result)
+            })
+    })
+}

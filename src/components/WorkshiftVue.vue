@@ -1,11 +1,12 @@
 <script>
 import { mapGetters } from 'vuex';
 import store from '@/store';
+import {addOrderRequest, closeWorkshiftRequest, openWorkshiftRequest} from "@/utils/api";
 export default {
   data() {
     return {};
   },
-  methods: {},
+  methods: {addOrderRequest, closeWorkshiftRequest, openWorkshiftRequest},
   computed: {
     ...mapGetters(['getWorkshifts']),
     workshifts() {
@@ -18,22 +19,32 @@ export default {
 };
 </script>
 <template>
-  <h2>Смены</h2><br>
-  <div class="workshiftsInfo">
+  <h2>Открытые смены</h2><br>
+  <div class="openedWorkshiftsInfo">
     <div class="card" v-for="workshift in workshifts">
-      <h3>Номер {{ workshift.id }}</h3>
-      <p>Начало смены: {{ workshift.start }}</p>
-      <p>Окончание смены: {{ workshift.end }}</p>
+      <div class="workshift">
+        <h3>Номер {{ workshift.id }}</h3>
+        <p>Начало смены: {{ workshift.start }}</p>
+        <p>Окончание смены: {{ workshift.end }}</p>
+
+        <button type="submit" @click="openWorkshiftRequest(workshift.id)">Открыть смену</button><br><br>
+        <button type="submit" @click="closeWorkshiftRequest(workshift.id)">Закрыть смену</button><br><br>
+
+      </div>
     </div>
+
   </div>
 </template>
 <style scoped>
 
-.workshiftsInfo {
+.openedWorkshiftsInfo {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 100px;
 }
+
+
+
 .card {
   display: flex;
   flex-wrap: wrap;
@@ -41,6 +52,10 @@ export default {
   gap: 50px;
   flex-direction: column;
   border: 2px solid black
+}
+
+button {
+  width: 250px;
 }
 
 </style>
