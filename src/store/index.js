@@ -7,20 +7,23 @@ import {
     showWorkShifts,
     openWorkshiftRequest,
     closeWorkshiftRequest,
-    viewUsers
+    viewUsers,
+    viewUser
 } from "@/utils/api";
 
 export default createStore({
     state: {
         token: localStorage.getItem('myAppToken') || '',
         users: [],
+        user: {},
         workshifts: [],
         orders: [],
     },
     getters: {
         isAuthenticated: (state) => !!state.token,
         getWorkshifts: (state) => state.workshifts,
-        getUsers: (state) => state.users
+        getUsers: (state) => state.users,
+        getUser: (state) => state.user
     },
     mutations: {
         AUTH_SUCCESS: (state, token) => {
@@ -41,6 +44,9 @@ export default createStore({
         },
         SET_USERS: (state, users) => {
             state.users = users;
+        },
+        SET_USER: (state, user) => {
+            state.user = user;
         },
         REMOVE_USER: (state, userId) => {
             state.users = state.users.filter(user => user.id === userId)
@@ -107,6 +113,15 @@ export default createStore({
                 viewUsers()
                     .then((token) => {
                         commit('SET_USERS', token);
+                        resolve();
+                    })
+            })
+        },
+        USER_REQUEST({commit}) {
+            return new Promise ((resolve) => {
+                viewUser()
+                    .then((token) => {
+                        commit('SET_USER', token);
                         resolve();
                     })
             })

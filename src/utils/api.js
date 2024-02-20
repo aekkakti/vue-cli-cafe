@@ -68,6 +68,23 @@ export const viewUsers = () => {
     })
 }
 
+export const viewUser = (userId) => {
+    return new Promise((resolve) => {
+        fetch(`${API}/user/${userId}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('myAppToken')}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => resolve(result))
+            .catch((error) => {
+                console.log(error)
+            });
+    })
+}
+
 export const addOrderRequest = (user) => {
     return new Promise ((resolve, reject) => {
         fetch(`${API}/order`, {

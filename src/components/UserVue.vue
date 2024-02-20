@@ -1,8 +1,7 @@
 <script>
-import store from "@/store"
 
 import {mapGetters} from "vuex";
-import {removeUserRequest} from "@/utils/api";
+import {removeUserRequest, viewUser} from "@/utils/api";
 export default {
   data() {
     return {
@@ -10,16 +9,21 @@ export default {
       login: null,
       password: null,
       photo_file: null,
-      role_id: null
+      role_id: null,
+      showModal: false
     }
   },
   computed: {
-    ...mapGetters(['getUsers']),
+    ...mapGetters(['getUsers', 'getUser']),
     users() {
       return this.getUsers;
+    },
+    user() {
+      return this.getUser;
     }
   },
   methods: {
+    viewUser,
     removeUserRequest,
     register() {
       const User = {
@@ -67,13 +71,23 @@ export default {
       <div class="card" v-for="userData in user">
         <div>
           <h3>Имя: {{ userData.name }}</h3>
-          <p>Логин: {{ userData.login }}</p>
-          <p>Роль: {{ userData.group }}</p>
+          <p>Должность: {{ userData.group }}</p>
           <!-- Дописать событие на клик  -->
+          <button class="getInfo" v-on:click="showModal = true" @click="viewUser(userData.id)">Инфо о сотруднике</button><br><br>
           <button class="removeWorker" @click="removeUserRequest(userData.id)" v-if="userData.status !== 'fired'">Уволить сотрудника</button>
+          <h2 v-if="userData.status === 'fired'">Уволен</h2>
         </div>
       </div>
+      <div id="myDropdown" class="modal-container" v-if="showModal">
+        <p>Идентификатор: {{ user.id }}</p>
+        <p>Имя: {{ user.name }}</p>
+        <p>Логин {{ user.login }}</p>
+        <p>Роль: {{ user.group }}</p>
+        <button @click="showModal = false">Закрыть</button>
     </div>
+    </div>
+
+
 </template>
 
 <style scoped>
@@ -109,10 +123,43 @@ export default {
   font-size: 20px;
 }
 
+.getInfo {
+  background-color: #5475d3;
+  border: 1px solid black;
+  border-radius: 5px;
+  transition: .9s;
+  color: white;
+  width: 300px;
+  font-size: 20px;
+}
+
 .removeWorker:hover {
   background-color: #ab2424;
   color: white;
   cursor: pointer;
 }
+
+.getInfo:hover {
+  background-color: #1f348f;
+  color: white;
+  cursor: pointer;
+}
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  gap: 30px;
+  flex-direction: column;
+  color: aliceblue
+}
+
 
 </style>
