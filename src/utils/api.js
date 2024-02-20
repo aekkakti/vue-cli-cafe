@@ -35,19 +35,36 @@ export const logoutRequest = () => {
 }
 
 export const registerRequest = (user) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         fetch(`${API}/user`, {
             method: "POST",
             headers: {
-                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('myAppToken')}`,
             },
             body: JSON.stringify(user),
         })
             .then((response) => response.json())
-            .then((result) => resolve(result.data.user_token))
+            .then((result) => resolve(result))
             .catch((error) => {
-                reject(error);
+                console.log(error)
         });
+    })
+}
+
+export const viewUsers = () => {
+    return new Promise((resolve) => {
+        fetch(`${API}/user`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                Authorization: `Bearer ${localStorage.getItem('myAppToken')}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => resolve(result))
+            .catch((error) => {
+                console.log(error)
+            });
     })
 }
 

@@ -19,17 +19,15 @@ export default {
 };
 </script>
 <template>
-  <h2>Открытые смены</h2><br>
+  <h2>Все смены</h2><br>
   <div class="openedWorkshiftsInfo">
     <div class="card" v-for="workshift in workshifts">
       <div class="workshift">
         <h3>Номер {{ workshift.id }}</h3>
         <p>Начало смены: {{ workshift.start }}</p>
         <p>Окончание смены: {{ workshift.end }}</p>
-
-        <button @click="openWorkshiftRequest(workshift.id)">Открыть смену</button><br><br>
-        <button @click="closeWorkshiftRequest(workshift.id)">Закрыть смену</button><br><br>
-
+        <button @click="openWorkshiftRequest(workshift.id)" v-if="workshift.active !== 0">Открыть смену</button><br><br>
+        <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Закрыть смену</button><br><br>
       </div>
     </div>
 
@@ -38,12 +36,6 @@ export default {
 <style scoped>
 
 .openedWorkshiftsInfo{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 100px;
-}
-
-.closedWorkshiftsInfo {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 100px;

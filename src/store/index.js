@@ -1,17 +1,26 @@
 import {createStore} from "vuex";
-import {loginRequest, logoutRequest, registerRequest, addOrderRequest, showWorkShifts, openWorkshiftRequest, closeWorkshiftRequest} from "@/utils/api";
+import {
+    loginRequest,
+    logoutRequest,
+    registerRequest,
+    addOrderRequest,
+    showWorkShifts,
+    openWorkshiftRequest,
+    closeWorkshiftRequest,
+    viewUsers
+} from "@/utils/api";
 
 export default createStore({
     state: {
         token: localStorage.getItem('myAppToken') || '',
-        userInfoArray: [],
+        users: [],
         workshifts: [],
         orders: [],
     },
     getters: {
         isAuthenticated: (state) => !!state.token,
         getWorkshifts: (state) => state.workshifts,
-        registerUser: (state) => state.userInfoArray
+        getUsers: (state) => state.users
     },
     mutations: {
         AUTH_SUCCESS: (state, token) => {
@@ -27,11 +36,11 @@ export default createStore({
             state.token = token
         },
         // переделать добавление пользователя
-        REGISTER_SUCCESS: (state, userInfoArray) => {
-            state.userInfoArray.push(...userInfoArray)
+        REGISTER_SUCCESS: (state, user) => {
+            state.users.push(user)
         },
-        REGISTER_ERROR: (state) => {
-            state.userInfoArray = ""
+        SET_USERS: (state, users) => {
+            state.users = users;
         },
         WORKSHIFT_SHOW: (state, workshifts) => {
             state.workshifts = workshifts
@@ -82,16 +91,20 @@ export default createStore({
             })
         },
         REGISTER_REQUEST({commit}, user) {
-            return new Promise ((resolve, reject) => {
+            return new Promise ((resolve) => {
                 registerRequest(user)
-                    .then((token) => {
-                        commit('REGISTER_SUCCESS', token);
-                        localStorage.setItem('myAppToken', token);
+                    .then(() => {
+                        commit('REGISTER_SUCCESS');
                         resolve();
                     })
-                    .catch(() => {
-                        commit('REGISTER_ERROR')
-                        reject()
+            })
+        },
+        USERS_REQUEST({commit}) {
+            return new Promise ((resolve) => {
+                viewUsers()
+                    .then((token) => {
+                        commit('SET_USERS', token);
+                        resolve();
                     })
             })
         },
@@ -122,7 +135,6 @@ export default createStore({
                     })
             })
         },
-
         ADD_ORDER_REQUEST( {commit }) {
             return new Promise((resolve, reject) => {
                 addOrderRequest()

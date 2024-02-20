@@ -5,18 +5,18 @@ import {mapGetters} from "vuex";
 export default {
   data() {
     return {
-      name: "",
-      login: "",
-      password: "",
-      photo_file: "",
+      name: null,
+      login: null,
+      password: null,
+      photo_file: null,
       role_id: null
     }
   },
   computed: {
-    ...mapGetters['userInfoArray'],
-    userInfoArray() {
-      return this.userInfoArray
-    },
+    ...mapGetters(['getUsers']),
+    users() {
+      return this.getUsers;
+    }
   },
   methods: {
     register() {
@@ -27,17 +27,19 @@ export default {
         photo_file: this.photo_file,
         role_id: this.role_id
       }
-
       this.$store
           .dispatch('REGISTER_REQUEST', User)
-          .then(() => this.$router.push("/"));
-    }
+    },
+  },
+  mounted() {
+    this.$store
+        .dispatch('USERS_REQUEST')
   }
 }
 </script>
 
 <template>
-<form class="registerUser" @submit.prevent="register">
+<form class="registerUser" @submit.prevent="register" enctype="multipart/form-data" method="POST">
   <h2>Добавление нового сотрудника</h2>
   <label for="name">Имя</label><br>
   <input type="text" required v-model="name"/><br>
@@ -57,6 +59,17 @@ export default {
   <button type="reset">Отмена</button><br>
 
 </form>
+
+  <h2>Все работники:</h2>
+    <div class="cards" v-for="user in users">
+      <div v-for="userData in user">
+        <div class="card">
+          <h3>Имя: {{ userData.name }}</h3>
+          <p>Логин: {{ userData.login }}</p>
+          <p>Роль: {{ userData.group }}</p>
+        </div>
+      </div>
+    </div>
 </template>
 
 <style scoped>
@@ -66,5 +79,20 @@ export default {
   flex-direction: column;
   margin: 0 auto;
   width: 250px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 100px;
+}
+
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 50px;
+  flex-direction: column;
+  border: 2px solid black
 }
 </style>
