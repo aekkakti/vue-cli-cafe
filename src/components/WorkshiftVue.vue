@@ -14,7 +14,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch('WORKSHIFTS_REQUEST');
+    this.$store.dispatch('WORKSHIFTS_REQUEST', 'OPEN_WORKSHIFT_REQUEST', 'CLOSE_WORKSHIFT_REQUEST');
   },
 };
 </script>
@@ -26,8 +26,8 @@ export default {
         <h3>Номер {{ workshift.id }}</h3>
         <p>Начало смены: {{ workshift.start }}</p>
         <p>Окончание смены: {{ workshift.end }}</p>
-        <button @click="openWorkshiftRequest(workshift.id)" v-if="workshift.active !== 0">Открыть смену</button><br><br>
-        <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Закрыть смену</button><br><br>
+        <button @click="openWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Открыть смену</button><br><br>
+        <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active !== 0">Закрыть смену</button><br><br>
       </div>
     </div>
 

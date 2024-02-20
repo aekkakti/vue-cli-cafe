@@ -2,6 +2,7 @@
 import store from "@/store"
 
 import {mapGetters} from "vuex";
+import {removeUserRequest} from "@/utils/api";
 export default {
   data() {
     return {
@@ -19,6 +20,7 @@ export default {
     }
   },
   methods: {
+    removeUserRequest,
     register() {
       const User = {
         name: this.name,
@@ -33,13 +35,13 @@ export default {
   },
   mounted() {
     this.$store
-        .dispatch('USERS_REQUEST')
+        .dispatch('USERS_REQUEST', 'REMOVE_USER_REQUEST')
   }
 }
 </script>
 
 <template>
-<form class="registerUser" @submit.prevent="register" enctype="multipart/form-data" method="POST">
+<form id="registerUser" @submit.prevent="register" enctype="multipart/form-data" method="POST">
   <h2>Добавление нового сотрудника</h2>
   <label for="name">Имя</label><br>
   <input type="text" required v-model="name"/><br>
@@ -62,11 +64,13 @@ export default {
 
   <h2>Все работники:</h2>
     <div class="cards" v-for="user in users">
-      <div v-for="userData in user">
-        <div class="card">
+      <div class="card" v-for="userData in user">
+        <div>
           <h3>Имя: {{ userData.name }}</h3>
           <p>Логин: {{ userData.login }}</p>
           <p>Роль: {{ userData.group }}</p>
+          <!-- Дописать событие на клик  -->
+          <button class="removeWorker" @click="removeUserRequest(userData.id)" v-if="userData.status !== 'fired'">Уволить сотрудника</button>
         </div>
       </div>
     </div>
@@ -74,7 +78,7 @@ export default {
 
 <style scoped>
 
-.registerUser {
+#registerUser {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
@@ -95,4 +99,20 @@ export default {
   flex-direction: column;
   border: 2px solid black
 }
+.removeWorker {
+  background-color: #f54b4b;
+  border: 1px solid black;
+  border-radius: 5px;
+  transition: .9s;
+  color: white;
+  width: 300px;
+  font-size: 20px;
+}
+
+.removeWorker:hover {
+  background-color: #ab2424;
+  color: white;
+  cursor: pointer;
+}
+
 </style>

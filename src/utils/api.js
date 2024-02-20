@@ -138,3 +138,22 @@ export const closeWorkshiftRequest = (index) => {
             })
     })
 }
+
+export const removeUserRequest = (userId) => {
+    return new Promise( (resolve) => {
+        fetch(`${API}/user/${userId}/to-dismiss`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
+            },
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((result) => {
+                resolve(result)
+                console.log(userId)
+            })
+    })
+}

@@ -42,6 +42,9 @@ export default createStore({
         SET_USERS: (state, users) => {
             state.users = users;
         },
+        REMOVE_USER: (state, userId) => {
+            state.users = state.users.filter(user => user.id === userId)
+        },
         WORKSHIFT_SHOW: (state, workshifts) => {
             state.workshifts = workshifts
         },
@@ -117,6 +120,15 @@ export default createStore({
                     })
             })
         },
+        REMOVE_USER_REQUEST({ commit }) {
+            return new Promise((resolve) => {
+                showWorkShifts()
+                    .then((result) => {
+                        commit('REMOVE_USER', result)
+                        resolve()
+                    })
+            })
+        },
         OPEN_WORKSHIFT_REQUEST({ commit }) {
             return new Promise ((resolve) => {
                 openWorkshiftRequest()
@@ -126,7 +138,7 @@ export default createStore({
                     })
             })
         },
-        CLOSE_WORSHIFT_REQUEST ({ commit }) {
+        CLOSE_WORKSHIFT_REQUEST ({ commit }) {
             return new Promise ((resolve) => {
                 closeWorkshiftRequest()
                     .then((result) => {
