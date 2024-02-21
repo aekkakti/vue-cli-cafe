@@ -103,7 +103,7 @@ export default createStore({
             return new Promise ((resolve) => {
                 registerRequest(user)
                     .then(() => {
-                        commit('REGISTER_SUCCESS');
+                        commit('REGISTER_SUCCESS', user);
                         resolve();
                     })
             })

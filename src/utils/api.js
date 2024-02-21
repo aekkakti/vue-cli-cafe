@@ -34,14 +34,15 @@ export const logoutRequest = () => {
     });
 }
 
-export const registerRequest = (user) => {
+export const registerRequest = (formData) => {
+    console.log(formData)
     return new Promise((resolve) => {
         fetch(`${API}/user`, {
             method: "POST",
+            body: formData,
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('myAppToken')}`,
             },
-            body: JSON.stringify(user),
         })
             .then((response) => response.json())
             .then((result) => resolve(result))
@@ -78,7 +79,9 @@ export const viewUser = (userId) => {
             },
         })
             .then((response) => response.json())
-            .then((result) => resolve(result))
+            .then((result) => {
+                resolve(result.data)
+            })
             .catch((error) => {
                 console.log(error)
             });
@@ -170,7 +173,6 @@ export const removeUserRequest = (userId) => {
             })
             .then((result) => {
                 resolve(result)
-                console.log(userId)
             })
     })
 }

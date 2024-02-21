@@ -25,21 +25,25 @@ export default {
   methods: {
     viewUser,
     removeUserRequest,
-    register() {
-      const User = {
-        name: this.name,
-        login: this.login,
-        password: this.password,
-        photo_file: this.photo_file,
-        role_id: this.role_id
-      }
-      this.$store
-          .dispatch('REGISTER_REQUEST', User)
+    uploadFile() {
+      this.photo_file = this.$refs.file.files[0]
     },
-  },
+    register() {
+      let formData = new FormData()
+      formData.append('name', this.name)
+      formData.append('login', this.login)
+      formData.append('password', this.password)
+      if (this.photo_file !== null)  formData.append('photo_file', this.photo_file)
+      formData.append('role_id', this.role_id)
+      console.log(formData)
+
+      this.$store.dispatch('REGISTER_REQUEST', formData)
+      }
+    },
   mounted() {
     this.$store
-        .dispatch('USERS_REQUEST', 'REMOVE_USER_REQUEST')
+        .dispatch('USERS_REQUEST')
+    this.$store.dispatch('REMOVE_USER_REQUEST')
   }
 }
 </script>
@@ -54,9 +58,9 @@ export default {
   <label for="password">Пароль</label><br>
   <input type="password" required v-model="password"/><br>
   <label for="photo">Фото</label><br>
-  <input type="file" v-on:change="photo_file"/><br>
+  <input type="file" v-on:change="uploadFile"/><br>
   <label for="selectRole">Роль</label><br>
-  <select v-model="role_id">
+  <select v-model="role_id" required>
       <option value="1">Администратор</option>
       <option value="2">Официант</option>
       <option value="3">Повар</option>
@@ -72,7 +76,6 @@ export default {
         <div>
           <h3>Имя: {{ userData.name }}</h3>
           <p>Должность: {{ userData.group }}</p>
-          <!-- Дописать событие на клик  -->
           <button class="getInfo" v-on:click="showModal = true" @click="viewUser(userData.id)">Инфо о сотруднике</button><br><br>
           <button class="removeWorker" @click="removeUserRequest(userData.id)" v-if="userData.status !== 'fired'">Уволить сотрудника</button>
           <h2 v-if="userData.status === 'fired'">Уволен</h2>
@@ -81,12 +84,11 @@ export default {
       <div id="myDropdown" class="modal-container" v-if="showModal">
         <p>Идентификатор: {{ user.id }}</p>
         <p>Имя: {{ user.name }}</p>
-        <p>Логин {{ user.login }}</p>
+        <p>Логин: {{ user.login }}</p>
         <p>Роль: {{ user.group }}</p>
         <button @click="showModal = false">Закрыть</button>
     </div>
     </div>
-
 
 </template>
 
