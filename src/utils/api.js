@@ -35,7 +35,6 @@ export const logoutRequest = () => {
 }
 
 export const registerRequest = (formData) => {
-    console.log(formData)
     return new Promise((resolve) => {
         fetch(`${API}/user`, {
             method: "POST",
@@ -156,6 +155,24 @@ export const closeWorkshiftRequest = (index) => {
             .then((result) => {
                 resolve(result)
             })
+    })
+}
+
+export const addWorkshiftRequest = (workshift) => {
+    return new Promise((resolve) => {
+        fetch(`${API}/work-shift`, {
+            method: "POST",
+            body: JSON.stringify(workshift),
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`,
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => resolve(result))
+            .catch((error) => {
+                console.log(error)
+            });
     })
 }
 

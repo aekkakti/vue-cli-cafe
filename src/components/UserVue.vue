@@ -35,14 +35,12 @@ export default {
       formData.append('password', this.password)
       if (this.photo_file !== null)  formData.append('photo_file', this.photo_file)
       formData.append('role_id', this.role_id)
-      console.log(formData)
 
       this.$store.dispatch('REGISTER_REQUEST', formData)
       }
     },
   mounted() {
-    this.$store
-        .dispatch('USERS_REQUEST')
+    this.$store.dispatch('USERS_REQUEST')
     this.$store.dispatch('REMOVE_USER_REQUEST')
   }
 }

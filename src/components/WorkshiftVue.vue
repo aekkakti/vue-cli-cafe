@@ -1,25 +1,46 @@
 <script>
 import { mapGetters } from 'vuex';
-import store from '@/store';
-import {addOrderRequest, closeWorkshiftRequest, openWorkshiftRequest} from "@/utils/api";
+import {openWorkshiftRequest, closeWorkshiftRequest} from "@/utils/api";
 export default {
   data() {
-    return {};
+    return {
+      start: "",
+      end: ""
+    };
   },
-  methods: {addOrderRequest, closeWorkshiftRequest, openWorkshiftRequest},
   computed: {
     ...mapGetters(['getWorkshifts']),
     workshifts() {
       return this.getWorkshifts;
     },
   },
+  methods: {
+    closeWorkshiftRequest,
+    openWorkshiftRequest,
+    addWorkshift() {
+      const Workshift = {
+        start: this.start.replace('T', ' '),
+        end: this.end.replace('T', ' ')
+      }
+      this.$store.dispatch('ADD_WORKSHIFT_REQUEST', Workshift)
+  },
+  },
   mounted() {
-    this.$store.dispatch('WORKSHIFTS_REQUEST', 'OPEN_WORKSHIFT_REQUEST', 'CLOSE_WORKSHIFT_REQUEST');
+    this.$store.dispatch('WORKSHIFTS_REQUEST');
   },
 };
 </script>
 <template>
   <h2>Все смены</h2><br>
+  <h3>Добавить смену</h3>
+  <form id="addWorkshift" @submit.prevent="addWorkshift" method="POST">
+    <label for="start">Дата начала</label><br><br>
+    <input type="datetime-local" required v-model="start"/><br><br>
+    <label for="end">Дата окончания</label><br><br>
+    <input type="datetime-local" required v-model="end"/><br><br>
+    <button type="submit">Создать смену</button><br><br><br>
+  </form>
+
   <div class="openedWorkshiftsInfo">
     <div class="card" v-for="workshift in workshifts">
       <div class="workshift">
@@ -27,7 +48,7 @@ export default {
         <p>Начало смены: {{ workshift.start }}</p>
         <p>Окончание смены: {{ workshift.end }}</p>
         <button @click="openWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Открыть смену</button><br><br>
-        <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active !== 0">Закрыть смену</button><br><br>
+        <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Закрыть смену</button><br><br>
       </div>
     </div>
 

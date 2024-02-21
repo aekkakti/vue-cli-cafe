@@ -8,7 +8,7 @@ import {
     openWorkshiftRequest,
     closeWorkshiftRequest,
     viewUsers,
-    viewUser
+    viewUser, addWorkshiftRequest
 } from "@/utils/api";
 
 export default createStore({
@@ -54,13 +54,16 @@ export default createStore({
         WORKSHIFT_SHOW: (state, workshifts) => {
             state.workshifts = workshifts
         },
-        CLOSE_WORKSHIFT: (state, workshifts) => {
-            const index = state.workshifts.map(item => item.id).indexOf(workshifts)
+        CLOSE_WORKSHIFT: (state, workshiftId) => {
+            const index = state.workshifts.findIndex(workshift => workshift.id === workshiftId);
             state.workshifts[index].active = false
         },
-        OPEN_WORKSHIFT: (state, workshifts) => {
-            const index = state.workshifts.map(item => item.id).indexOf(workshifts)
+        OPEN_WORKSHIFT: (state, workshiftId) => {
+            const index = state.workshifts.findIndex(workshift => workshift.id === workshiftId);
             state.workshifts[index].active = true
+        },
+        ADD_WORKSHIFT: (state, workshift) => {
+            state.workshifts.push(workshift)
         },
         ADD_ORDER_SUCCESS: (state, orders) => {
             state.orders.push(...orders)
@@ -159,6 +162,16 @@ export default createStore({
                     .then((result) => {
                         commit('CLOSE_WORKSHIFT', result)
                         resolve()
+                    })
+            })
+        },
+        ADD_WORKSHIFT_REQUEST ({ commit }, workshift) {
+            return new Promise ((resolve) => {
+                addWorkshiftRequest(workshift)
+                    .then((result) => {
+                        commit('ADD_WORKSHIFT', result)
+                        resolve()
+                        console.log(result)
                     })
             })
         },
