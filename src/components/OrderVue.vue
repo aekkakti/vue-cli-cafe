@@ -8,7 +8,9 @@ export default {
     return {
       work_shift_id: null,
       table_id: null,
-      number_of_person: null
+      number_of_person: null,
+      start: "",
+      end: "",
     }
   },
   computed: {
@@ -24,11 +26,12 @@ export default {
         table_id: this.table_id,
         number_of_person: this.number_of_person
       }
-
       this.$store
           .dispatch('ADD_ORDER_REQUEST', Order)
-          .then(() => this.$router.push("/"));
-    }
+    },
+  },
+  mounted() {
+    this.$store.dispatch('SHOW_ORDERS_REQUEST')
   }
 }
 </script>

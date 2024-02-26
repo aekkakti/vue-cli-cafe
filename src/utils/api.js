@@ -87,17 +87,53 @@ export const viewUser = (userId) => {
     })
 }
 
+export const removeUserRequest = (userId) => {
+    return new Promise( (resolve) => {
+        fetch(`${API}/user/${userId}/to-dismiss`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
+            },
+        })
+            .then((response) => {
+                return response.json()
+            })
+            .then((result) => {
+                resolve(result)
+            })
+    })
+}
+
 export const addOrderRequest = (user) => {
     return new Promise ((resolve, reject) => {
         fetch(`${API}/order`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
             },
             body: JSON.stringify(user),
         })
             .then((response) => response.json())
             .then((result) => resolve(result.data.user_token))
+            .catch((error) => {
+                reject(error);
+            })
+    })
+}
+
+export const showOrdersRequest = (workshiftId) => {
+    return new Promise ((resolve, reject) => {
+        fetch(`${API}/work-shift/${workshiftId}/order`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
+            },
+        })
+            .then((response) => response.json())
+            .then((result) => resolve(result.data))
             .catch((error) => {
                 reject(error);
             })
@@ -176,20 +212,3 @@ export const addWorkshiftRequest = (workshift) => {
     })
 }
 
-export const removeUserRequest = (userId) => {
-    return new Promise( (resolve) => {
-        fetch(`${API}/user/${userId}/to-dismiss`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Authorization': `Bearer ${localStorage.getItem('myAppToken')}`
-            },
-        })
-            .then((response) => {
-                return response.json()
-            })
-            .then((result) => {
-                resolve(result)
-            })
-    })
-}

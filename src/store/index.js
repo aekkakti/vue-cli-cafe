@@ -8,7 +8,7 @@ import {
     openWorkshiftRequest,
     closeWorkshiftRequest,
     viewUsers,
-    viewUser, addWorkshiftRequest
+    viewUser, addWorkshiftRequest, showOrdersRequest
 } from "@/utils/api";
 
 export default createStore({
@@ -23,7 +23,8 @@ export default createStore({
         isAuthenticated: (state) => !!state.token,
         getWorkshifts: (state) => state.workshifts,
         getUsers: (state) => state.users,
-        getUser: (state) => state.user
+        getUser: (state) => state.user,
+        getOrders: (state) => state.orders
     },
     mutations: {
         AUTH_SUCCESS: (state, token) => {
@@ -38,7 +39,6 @@ export default createStore({
         LOGOUT_ERROR: (state, token) => {
             state.token = token
         },
-        // переделать добавление пользователя
         REGISTER_SUCCESS: (state, user) => {
             state.users.push(user)
         },
@@ -71,6 +71,9 @@ export default createStore({
         ADD_ORDER_ERROR: (state) => {
             state.orders = ""
         },
+        SHOW_ORDER: (state, order) => {
+            state.order = order
+        }
     },
     actions: {
         AUTH_REQUEST({commit}, user) {
@@ -171,7 +174,6 @@ export default createStore({
                     .then((result) => {
                         commit('ADD_WORKSHIFT', result)
                         resolve()
-                        console.log(result)
                     })
             })
         },
@@ -186,6 +188,15 @@ export default createStore({
                     .catch((error) => {
                         commit('ADD_ORDER_ERROR')
                         reject(error)
+                    })
+            })
+        },
+        SHOW_ORDERS_REQUEST ({ commit }, orders) {
+            return new Promise((resolve) => {
+                showOrdersRequest(orders)
+                    .then(() => {
+                        commit('SHOW_ORDER', orders)
+                        resolve()
                     })
             })
         }

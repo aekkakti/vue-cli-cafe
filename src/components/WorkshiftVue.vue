@@ -1,6 +1,6 @@
 <script>
 import { mapGetters } from 'vuex';
-import {openWorkshiftRequest, closeWorkshiftRequest} from "@/utils/api";
+import {openWorkshiftRequest, closeWorkshiftRequest, showOrdersRequest} from "@/utils/api";
 export default {
   data() {
     return {
@@ -15,6 +15,7 @@ export default {
     },
   },
   methods: {
+    showOrdersRequest,
     closeWorkshiftRequest,
     openWorkshiftRequest,
     addWorkshift() {
@@ -49,6 +50,7 @@ export default {
         <p>Окончание смены: {{ workshift.end }}</p>
         <button @click="openWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Открыть смену</button><br><br>
         <button @click="closeWorkshiftRequest(workshift.id)" v-if="workshift.active === 0">Закрыть смену</button><br><br>
+        <button @click="showOrdersRequest(order.id)">Посмотреть смену</button>
       </div>
     </div>
 
